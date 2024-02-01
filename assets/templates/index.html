@@ -66,20 +66,36 @@
 
         var playlistName = null;
 
-        document.addEventListener('DOMContentLoaded', function() {
-            var animatedElement = document.getElementById('animatedElement');
-            var hiddenElement = document.getElementById('content');
+        var app = new Vue({
+            el: '#app'
+        });
 
-            function removeAnimationClass() {
-                animatedElement.classList.remove('slide-up');
-                animatedElement.classList.add('slide-up-final-state');
-                animatedElement.removeEventListener('animationend', removeAnimationClass);
+        Vue.component('my-component', {
+            template: `
+                <div>
+                    <!-- Other HTML content goes here -->
+                    <div id="animatedElement"></div>
+                    <!-- More HTML content -->
+                </div>
+            `,
+            mounted() {
+                // Access animatedElement after the component has been mounted to the DOM
+                const animatedElement = this.$el.querySelector('#animatedElement');
+                if (animatedElement) {
+                    var hiddenElement = document.getElementById('content');
 
-                // Make the hidden element visible
-                hiddenElement.style.display = 'block';
+                    function removeAnimationClass() {
+                        animatedElement.classList.remove('slide-up');
+                        animatedElement.classList.add('slide-up-final-state');
+                        animatedElement.removeEventListener('animationend', removeAnimationClass);
+
+                        // Make the hidden element visible
+                        hiddenElement.style.display = 'block';
+                    }
+
+                    animatedElement.addEventListener('animationend', removeAnimationClass);
+                }
             }
-
-            animatedElement.addEventListener('animationend', removeAnimationClass);
         });
 
         function convert() {
