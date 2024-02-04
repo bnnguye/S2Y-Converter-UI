@@ -6,7 +6,7 @@
     <title>Main Page</title>
     <script src="/assets/static/scripts/script.js"></script>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="https://unpkg.com/vue@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@latest"></script>
     <link rel="stylesheet" href="/assets/static/css/styles.css">
     <link rel="stylesheet" href="/assets/static/css/particles.css">
     <link rel="stylesheet" href="/assets/static/scss/style.scss">
@@ -66,22 +66,19 @@
 
         var playlistName = null;
 
-        var app = new Vue({
-            el: '#app'
-        });
-
-        Vue.component('my-component', {
-            template: `
-                <div>
-                    <!-- Other HTML content goes here -->
-                    <div id="animatedElement"></div>
-                    <!-- More HTML content -->
-                </div>
-            `,
-            mounted() {
-                // Access animatedElement after the component has been mounted to the DOM
-                const animatedElement = this.$el.querySelector('#animatedElement');
+        document.addEventListener('DOMContentLoaded', function() {
+        // Load HTML file containing the element dynamically
+        fetch('nav.html')
+            .then(response => response.text())
+            .then(html => {
+                // Append the HTML content to the DOM
+                document.body.insertAdjacentHTML('beforeend', html);
+                
+                // Access the element with id "1" once it's loaded
+                const animatedElement = document.getElementById('animatedElement');
                 if (animatedElement) {
+                    console.log('animatedElement is ready:', animatedElement);
+
                     var hiddenElement = document.getElementById('content');
 
                     function removeAnimationClass() {
@@ -91,12 +88,18 @@
 
                         // Make the hidden element visible
                         hiddenElement.style.display = 'block';
+                        const removeLogo = document.getElementById('remove_logo');
+                        removeLogo.style.display = 'none';
                     }
 
                     animatedElement.addEventListener('animationend', removeAnimationClass);
                 }
-            }
+            })
+            .catch(error => {
+                console.error('Error loading HTML file:', error);
         });
+});
+
 
         function convert() {
             var spotifyID  = document.getElementById("spotifyID").value;
