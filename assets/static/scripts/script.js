@@ -1,4 +1,5 @@
 let bearerToken;
+api = "Spotify2YouTube-env.eba-7xti2hhi.ap-southeast-2.elasticbeanstalk.com";
 
 function process(playlistID) {
     console.log('Processing..');
@@ -28,7 +29,7 @@ function process(playlistID) {
 
 function getBearerToken() {
     console.log("Getting bearer token..")
-    return fetch('/api/get/bearerToken')
+    return fetch(api + '/api/get/bearerToken')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -57,7 +58,7 @@ function getPlaylistWithToken(playlistID) {
 
 function sendPlaylistData(playlistData) {
   console.log("Sending playlist data to Youtube API...");
-  fetch('/api/spotify', {
+  fetch(api + '/api/spotify', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
